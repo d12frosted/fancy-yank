@@ -1,0 +1,28 @@
+* =fancy-yank=
+Sometimes you just have to transform text from the clipboard before pasting it
+into the buffer. For example, when inserting links to tickets, issues or pull
+requests you might want to format them, so
+https://github.com/d12frosted/fancy-yank/issue/1 becomes
+[[https://github.com/d12frosted/fancy-yank/issue/1][d12frosted/fancy-yank#1]]. Are you doing it manually?
+
+** Usage
+In order to use this package, setup the value of =fancy-yank-rules= and use
+=fancy-yank= to automatically apply transformations defined by these rules.
+
+** Example setup
+#+BEGIN_SRC emacs-lisp
+  (setq fancy-yank-rules
+        '(
+          ;; transform GitHub issue link to username/repo#number
+          ("\\(https?://github.com/\\([[:alnum:]-]+\\)/\\([-[:alnum:]]+\\)/[[:alpha:]]+/\\([[:digit:]]+\\).*\\)" . "[[\\1][\\2/\\3#\\4]]")
+
+          ;; append "FIX " to any other string
+          (#'identity . (lambda (x) (concat "FIX " x)))
+          ))
+#+END_SRC
+
+Please refer to =fancy-yank-rules= documentation for more information.
+
+** Contributing
+Let me know if you have any issues, ideas or proposals. Pull requests are
+welcome!
