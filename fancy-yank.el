@@ -9,8 +9,8 @@
 ;; Keywords:
 ;; Homepage: https://github.com/d12frosted/emacs-fancy-yank
 
-;; Package-Version: 0.0.1
-;; Package-Requires: ((emacs "25.1")
+;; Package-Version: 0.0.2
+;; Package-Requires: ((emacs "25.1") (org-cliplink "0.2"))
 
 ;; This file is not part of GNU Emacs.
 ;;; License: GPLv3
@@ -30,7 +30,25 @@
 ;; Example setup:
 ;;
 ;; (setq fancy-yank-rules
-;; '(("\\(https?://github.com/\\([[:alnum:]-]+\\)/\\([-[:alnum:]]+\\)/[[:alpha:]]+/\\([[:digit:]]+\\).*\\)" . "[[\\1][\\2/\\3#\\4]]")))
+;;       '(
+;;         ;; transform GitHub issue link to username/repo#number
+;;         ("\\(https?://github.com/\\([-[:alnum:]]+\\)/\\([-[:alnum:]]+\\)/[[:alpha:]]+/\\([[:digit:]]+\\)\\).*" .
+;;          "[[\\1][\\2/\\3#\\4]]")
+
+;;         ;; the same as before, but much more flexible
+;;         ("\\(https?://github.com/\\([-[:alnum:]]+\\)/\\([-[:alnum:]]+\\)/[[:alpha:]]+/\\([[:digit:]]+\\)\\).*" .
+;;          (fancy-yank-extract-regex
+;;           (lambda (url owner repo number &rest args)
+;;             (list url
+;;                   (format "%s/%s#%s" owner repo number)))
+;;           fancy-yank-format-link))
+
+;;         ;; automatically get the title of web page using `org-cliplink' and
+;;         ;; format it acordingly to the current major mode
+;;         ("https?://.*" . (fancy-yank-extract-url-title fancy-yank-format-link))
+
+;;         ;; append "FIX " to any other string
+;;         (#'identity . (lambda (x) (concat "FIX " x)))))
 ;;
 ;; It will transform GitHub issue/pr link into `org-mode' link with a *fancy* name.
 ;;
@@ -61,6 +79,15 @@ Transformation can come in different flavors as well.
 
 - If it's a function, then it is used as transformation.
 
+- If it's a list, then every element is treated like a function
+  as is called one by one in a pipe manner. Rule itself and the
+  input is passed to the first function and it's result is passed
+  to the next function and so on. Note that every function must
+  return a list, which is passed unpacked to the next function.
+  Please see `fancy-yank-extract-regex',
+  `fancy-yank-extract-url-title' and `fancy-yank-format-link' for
+  examples.
+
 Simple as that.")
 
 ;;;###autoload
@@ -90,11 +117,64 @@ Simple as that.")
         (t nil)))
 
 (defun fy--apply (rule input)
-  (cond ((stringp (car rule))
+  (cond ((and (stringp (car rule))
+              (stringp (cdr rule)))
          (replace-regexp-in-string (car rule) (cdr rule) input))
         ((functionp (car rule))
          (funcall (cdr rule) input))
+        ((listp (cdr rule))
+         (let (value)
+           (dolist (f (cdr rule) value)
+             (setq value (if (null value)
+                             (funcall f rule input)
+                           (apply f value))))))
         (t input)))
+
+(defun fancy-yank-extract-regex (rule input)
+  "Extract regexp groups from the INPUT as defined in car of the RULE.
+
+Should be used inside the cdr of the RULE."
+  (string-match (car rule) input)
+  (let ((res '())
+        (num 1))
+    (while (> num 0)
+      (if-let ((x (match-string num input)))
+          (progn
+            (add-to-list 'res x t)
+            (setq num (+ 1 num)))
+        (setq num 0)))
+    res))
+
+(defun fancy-yank-extract-url-title (rule input &rest args)
+  "Get the title of the INPUT url.
+
+Returns a (INPUT, title) list.
+
+Should be used inside the cdr of the RULE."
+  (list input
+        (org-cliplink-retrieve-title-synchronously input)))
+
+(defun fancy-yank-format-link (url description &rest args)
+  "Format link for URL with DESCRIPTION based on current mode.
+
+Should be used inside the cdr of the RULE."
+  (cond ((or (eq major-mode 'org-mode)
+             (eq major-mode 'org-capture-mode))
+         (format "[[%s][%s%s]]"
+                 url
+                 description
+                 (apply #'concat args)))
+
+        ((eq major-mode 'markdown-mode)
+         (format "[%s%s](%s)"
+                 description
+                 (apply #'concat args)
+                 url))
+
+        (t (format "%s%s (%s)"
+                   description
+                   (apply #'concat args)
+                   url))))
 
 (provide 'fancy-yank)
 

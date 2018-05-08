@@ -14,11 +14,23 @@ In order to use this package, setup the value of =fancy-yank-rules= and use
   (setq fancy-yank-rules
         '(
           ;; transform GitHub issue link to username/repo#number
-          ("\\(https?://github.com/\\([[:alnum:]-]+\\)/\\([-[:alnum:]]+\\)/[[:alpha:]]+/\\([[:digit:]]+\\).*\\)" . "[[\\1][\\2/\\3#\\4]]")
+          ("\\(https?://github.com/\\([-[:alnum:]]+\\)/\\([-[:alnum:]]+\\)/[[:alpha:]]+/\\([[:digit:]]+\\)\\).*" .
+           "[[\\1][\\2/\\3#\\4]]")
+
+          ;; the same as before, but much more flexible
+          ("\\(https?://github.com/\\([-[:alnum:]]+\\)/\\([-[:alnum:]]+\\)/[[:alpha:]]+/\\([[:digit:]]+\\)\\).*" .
+           (fancy-yank-extract-regex
+            (lambda (url owner repo number &rest args)
+              (list url
+                    (format "%s/%s#%s" owner repo number)))
+            fancy-yank-format-link))
+
+          ;; automatically get the title of web page using `org-cliplink' and
+          ;; format it acordingly to the current major mode
+          ("https?://.*" . (fancy-yank-extract-url-title fancy-yank-format-link))
 
           ;; append "FIX " to any other string
-          (#'identity . (lambda (x) (concat "FIX " x)))
-          ))
+          (#'identity . (lambda (x) (concat "FIX " x)))))
 #+END_SRC
 
 Please refer to =fancy-yank-rules= documentation for more information.
