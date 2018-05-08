@@ -1,0 +1,17 @@
+
+* Unreleased
+
+* ~v0.0.2~
+Release of piped transformations.
+
+- Added support of piped transformations.
+- Added some base transformations like ~fancy-yank-extract-regex~,
+  ~fancy-yank-extract-url-title~ and ~fancy-yank-format-link~ (for ~org-mode~
+  and ~markdown-mode~).
+- Added dependency on ~org-cliplink~ (due to ~fancy-yank-extract-url-title~).
+- Fixed license file.
+
+* ~v0.0.1~
+Initial release.
+
+- Core functionality.
