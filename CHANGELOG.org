@@ -2,6 +2,7 @@
 * Unreleased
 - Use ~substring-no-properties~ on the content of the buffer, before passing it
   to the ~fancy-yank-insert~.
+- Added tests.
 
 * ~v0.0.2~
 Release of piped transformations.
