@@ -93,7 +93,7 @@ Simple as that.")
 ;;;###autoload
 (defun fancy-yank ()
   (interactive)
-  (fancy-yank-insert (current-kill 0)))
+  (fancy-yank-insert (substring-no-properties (current-kill 0))))
 
 (defun fancy-yank-insert (input)
   (interactive "MInput: ")
