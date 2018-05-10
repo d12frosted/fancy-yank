@@ -1,5 +1,7 @@
 
 * Unreleased
+
+* ~v0.0.3~
 - Use ~substring-no-properties~ on the content of the buffer, before passing it
   to the ~fancy-yank-insert~.
 - Added tests.
