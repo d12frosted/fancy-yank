@@ -28,7 +28,7 @@
                    (fy--transform "some-random-string")))))
 
 (ert-deftest fancy-yank-format-link-test ()
-  "Tests `fancy-yank-extract-regexp'."
+  "Tests `fancy-yank-format-link'."
   (let ((major-mode 'org-mode))
     (should (equal "[[https://google.com][goOgl]]"
                    (fancy-yank-format-link "https://google.com" "goOgl")))))
@@ -52,7 +52,7 @@
                      (fancy-yank-format-link "https://google.com" "goOgl"))))))
 
 (ert-deftest fancy-yank-extract-url-title-test ()
-  "Tests `fancy-yank-extract-regexp'."
+  "Tests `fancy-yank-extract-url-title'."
   (with-mock
     (stub org-cliplink-retrieve-title-synchronously => "goOgl")
     (let ((fancy-yank-rules
