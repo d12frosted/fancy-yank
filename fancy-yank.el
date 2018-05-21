@@ -56,7 +56,6 @@
 ;;; Code:
 ;;
 
-;;;###autoload
 (defvar fancy-yank-rules '()
   "Rules for `fancy-yank-insert'.
 
@@ -89,6 +88,27 @@ Transformation can come in different flavors as well.
   examples.
 
 Simple as that.")
+
+(defvar fancy-yank-format-link-rules
+  '((org-mode . (lambda (url description &rest args)
+                  (format "[[%s][%s%s]]"
+                          url
+                          description
+                          (apply #'concat args))))
+    (org-capture-mode . (lambda (url description &rest args)
+                          (format "[[%s][%s%s]]"
+                                  url
+                                  description
+                                  (apply #'concat args))))
+    (markdown-mode . (lambda (url description &rest args)
+                       (format "[%s%s](%s)"
+                               description
+                               (apply #'concat args)
+                               url))))
+  "Rules for `fancy-yank-format-link'.
+
+Assoc list where car is mode and cdr is a format function with
+signature (url description &rest args).")
 
 ;;;###autoload
 (defun fancy-yank ()
@@ -158,23 +178,9 @@ Should be used inside the cdr of the RULE."
   "Format link for URL with DESCRIPTION based on current mode.
 
 Should be used inside the cdr of the RULE."
-  (cond ((or (eq major-mode 'org-mode)
-             (eq major-mode 'org-capture-mode))
-         (format "[[%s][%s%s]]"
-                 url
-                 description
-                 (apply #'concat args)))
-
-        ((eq major-mode 'markdown-mode)
-         (format "[%s%s](%s)"
-                 description
-                 (apply #'concat args)
-                 url))
-
-        (t (format "%s%s (%s)"
-                   description
-                   (apply #'concat args)
-                   url))))
+  (if-let ((rule (assoc major-mode fancy-yank-format-link-rules)))
+      (apply (cdr rule) url description args)
+    url))
 
 (provide 'fancy-yank)
 

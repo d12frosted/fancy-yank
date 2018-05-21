@@ -1,5 +1,6 @@
-
 * Unreleased
+- Expose ~fancy-yank-format-link-rules~ allowing to configure
+  ~fancy-yank-format-link~.
 
 * ~v0.0.3~
 - Use ~substring-no-properties~ on the content of the buffer, before passing it

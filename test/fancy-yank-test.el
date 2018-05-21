@@ -33,6 +33,24 @@
     (should (equal "[[https://google.com][goOgl]]"
                    (fancy-yank-format-link "https://google.com" "goOgl")))))
 
+(ert-deftest fancy-yank-format-link-rules-test ()
+  "Tests `fancy-yank-format-link-rules'."
+  (let ((fancy-yank-format-link-rules
+         '((some-fancy-mode . (lambda (url description &rest args)
+                                (format "%s at %s (%s)"
+                                        description
+                                        url
+                                        (apply #'concat args)))))))
+    (let ((major-mode 'some-fancy-mode))
+      (should (equal "goOgl at https://google.com (is a known service)"
+                     (fancy-yank-format-link
+                      "https://google.com"
+                      "goOgl"
+                      "is" " " "a" " " "known" " " "service"))))
+    (let ((major-mode 'some-unknown-mode))
+      (should (equal "https://google.com"
+                     (fancy-yank-format-link "https://google.com" "goOgl"))))))
+
 (ert-deftest fancy-yank-extract-url-title-test ()
   "Tests `fancy-yank-extract-regexp'."
   (with-mock

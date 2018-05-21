@@ -37,6 +37,9 @@ In order to use this package, setup the value of =fancy-yank-rules= and use
 
 Please refer to =fancy-yank-rules= documentation for more information.
 
+In order to configure =fancy-yank-format-link=, please take a look at
+=fancy-yank-format-link-rules=.
+
 ** Contributing
 Let me know if you have any issues, ideas or proposals. Pull requests are
 welcome!
