@@ -3,6 +3,7 @@
   ~fancy-yank-format-link~.
 - Allow to override function for extracting title from HTTP URL by exposing
   ~fancy-yank-extract-http-title-f~ variable.
+- Handle ~nil~ title in default rules.
 
 * ~v0.0.3~
 - Use ~substring-no-properties~ on the content of the buffer, before passing it

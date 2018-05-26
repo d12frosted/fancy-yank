@@ -31,7 +31,9 @@
   "Tests `fancy-yank-format-link'."
   (let ((major-mode 'org-mode))
     (should (equal "[[https://google.com][goOgl]]"
-                   (fancy-yank-format-link "https://google.com" "goOgl")))))
+                   (fancy-yank-format-link "https://google.com" "goOgl")))
+    (should (equal "[[https://google.com][https://google.com]]"
+                   (fancy-yank-format-link "https://google.com" nil)))))
 
 (ert-deftest fancy-yank-format-link-rules-test ()
   "Tests `fancy-yank-format-link-rules'."

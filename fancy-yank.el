@@ -93,16 +93,16 @@ Simple as that.")
   '((org-mode . (lambda (url description &rest args)
                   (format "[[%s][%s%s]]"
                           url
-                          description
+                          (if description description url)
                           (apply #'concat args))))
     (org-capture-mode . (lambda (url description &rest args)
                           (format "[[%s][%s%s]]"
                                   url
-                                  description
+                                  (if description description url)
                                   (apply #'concat args))))
     (markdown-mode . (lambda (url description &rest args)
                        (format "[%s%s](%s)"
-                               description
+                               (if description description url)
                                (apply #'concat args)
                                url))))
   "Rules for `fancy-yank-format-link'.
