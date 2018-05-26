@@ -110,6 +110,10 @@ Simple as that.")
 Assoc list where car is mode and cdr is a format function with
 signature (url description &rest args).")
 
+(defvar fancy-yank-extract-http-title-f
+  'org-cliplink-retrieve-title-synchronously
+  "Function to extract title from http URL.")
+
 ;;;###autoload
 (defun fancy-yank ()
   (interactive)
@@ -172,7 +176,7 @@ Returns a (INPUT, title) list.
 
 Should be used inside the cdr of the RULE."
   (list input
-        (org-cliplink-retrieve-title-synchronously input)))
+        (funcall fancy-yank-extract-http-title-f input)))
 
 (defun fancy-yank-format-link (url description &rest args)
   "Format link for URL with DESCRIPTION based on current mode.
