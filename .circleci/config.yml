@@ -87,5 +87,3 @@ workflows:
       - emacs_25.3
       - emacs_25.2
       - emacs_25.1
-      - emacs_24.5
-      - emacs_24.4
