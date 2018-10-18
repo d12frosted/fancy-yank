@@ -1,4 +1,5 @@
 * =fancy-yank=
+
 [[https://travis-ci.org/d12frosted/fancy-yank.svg?branch=master][file:https://travis-ci.org/d12frosted/fancy-yank.svg?branch=master]] | [[CircleCI][file:https://circleci.com/gh/d12frosted/fancy-yank.svg?style=svg]]
 
 Sometimes you just have to transform text from the clipboard before pasting it
@@ -39,6 +40,27 @@ Please refer to =fancy-yank-rules= documentation for more information.
 
 In order to configure =fancy-yank-format-link=, please take a look at
 =fancy-yank-format-link-rules=.
+
+** Testing
+
+First you need to install =cask=. If you are using [[https://github.com/d12frosted/homebrew-emacs-plus][emacs-plus]], then you need to
+ignore dependencies during =cask= installation.
+
+#+BEGIN_SRC bash
+  $ brew install cask --ignore-dependencies
+#+END_SRC
+
+One you have =cask=, you need to install all dependencies.
+
+#+BEGIN_SRC bash
+  $ cask install
+#+END_SRC
+
+Now you can run tests.
+
+#+BEGIN_SRC bash
+  $ cask exec ert-runner
+#+END_SRC
 
 ** Contributing
 Let me know if you have any issues, ideas or proposals. Pull requests are
