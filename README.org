@@ -1,6 +1,6 @@
 * =fancy-yank=
 
-[[https://travis-ci.org/d12frosted/fancy-yank.svg?branch=master][file:https://travis-ci.org/d12frosted/fancy-yank.svg?branch=master]] | [[CircleCI][file:https://circleci.com/gh/d12frosted/fancy-yank.svg?style=svg]]
+[[http://spacemacs.org][file:https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg]] | [[https://travis-ci.org/d12frosted/fancy-yank.svg?branch=master][file:https://travis-ci.org/d12frosted/fancy-yank.svg?branch=master]] | [[CircleCI][file:https://circleci.com/gh/d12frosted/fancy-yank.svg?style=svg]]
 
 Sometimes you just have to transform text from the clipboard before pasting it
 into the buffer. For example, when inserting links to tickets, issues or pull
