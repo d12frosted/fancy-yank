@@ -43,8 +43,9 @@ In order to configure =fancy-yank-format-link=, please take a look at
 
 ** Testing
 
-First you need to install =cask=. If you are using [[https://github.com/d12frosted/homebrew-emacs-plus][emacs-plus]], then you need to
-ignore dependencies during =cask= installation.
+Ideally, you should use [[http://cask.readthedocs.io/en/latest/][Cask]] for running tests. So first you need to install
+=cask=. If you are using [[https://github.com/d12frosted/homebrew-emacs-plus][emacs-plus]], then you need to ignore dependencies during
+=cask= installation.
 
 #+BEGIN_SRC bash
   $ brew install cask --ignore-dependencies
