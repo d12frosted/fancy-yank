@@ -1,7 +1,7 @@
 (ert-deftest fancy-yank-empty-rules-test ()
   "Tests that `fancy-yank' works as expected without any rules."
   (should (equal "some-random-string"
-                 (fy--transform "some-random-string"))))
+                 (fancy-yank--transform "some-random-string"))))
 
 (ert-deftest fancy-yank-simple-regexp-test ()
   "Tests `fancy-yank' with simple regexp rules."
@@ -9,11 +9,11 @@
          '(("The \\(quick\\) brown fox jumps over the \\(lazy\\) dog" . "\\1 \\2")
            ("ftp://\\([a-z]+\\).*" . "\\1"))))
     (should (equal "quick lazy"
-                   (fy--transform "The quick brown fox jumps over the lazy dog")))
+                   (fancy-yank--transform "The quick brown fox jumps over the lazy dog")))
     (should (equal "random"
-                   (fy--transform "ftp://random.org")))
+                   (fancy-yank--transform "ftp://random.org")))
     (should (equal "some-random-string"
-                   (fy--transform "some-random-string")))))
+                   (fancy-yank--transform "some-random-string")))))
 
 (ert-deftest fancy-yank-extract-regexp-test ()
   "Tests `fancy-yank-extract-regexp'."
@@ -23,11 +23,11 @@
                (lambda (one two &rest args)
                  (concat one " " two args)))))))
     (should (equal "hobbit orcs"
-                   (fy--transform "hobbit between orcs")))
+                   (fancy-yank--transform "hobbit between orcs")))
     (should (equal "hobbit hobbit"
-                   (fy--transform "hobbit between hobbit")))
+                   (fancy-yank--transform "hobbit between hobbit")))
     (should (equal "some-random-string"
-                   (fy--transform "some-random-string")))))
+                   (fancy-yank--transform "some-random-string")))))
 
 (ert-deftest fancy-yank-format-link-test ()
   "Tests `fancy-yank-format-link'."
@@ -63,6 +63,6 @@
            '(("\\(https?://.*\\)"
               . (fancy-yank-extract-url-title)))))
       (should (equal '("https://google.com" "goOgl")
-                     (fy--transform "https://google.com")))
+                     (fancy-yank--transform "https://google.com")))
       (should (equal "some-random-string"
-                     (fy--transform "some-random-string"))))))
+                     (fancy-yank--transform "some-random-string"))))))

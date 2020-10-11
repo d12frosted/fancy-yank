@@ -1,4 +1,4 @@
-;;; fancy-yank.el --- apply transformation upon yanking
+;;; fancy-yank.el --- Apply transformation upon yanking -*- lexical-binding: t -*-
 
 ;; Copyright (c) 2018 Boris Buliga
 
@@ -6,7 +6,7 @@
 ;; Maintainer: Boris Buliga <boris@d12frosted.io>
 ;; Created: 23 Apr 2018
 
-;; Keywords:
+;; Keywords: convenience
 ;; Homepage: https://github.com/d12frosted/emacs-fancy-yank
 
 ;; Package-Version: 0.0.2
@@ -55,6 +55,9 @@
 
 ;;; Code:
 ;;
+
+(require 'subr-x)
+(require 'seq)
 
 (defvar fancy-yank-rules '()
   "Rules for `fancy-yank-insert'.
@@ -116,31 +119,37 @@ signature (url description &rest args).")
 
 ;;;###autoload
 (defun fancy-yank ()
+  "Yank value from `kill-ring' according to `fancy-yank-rules'."
   (interactive)
   (fancy-yank-insert (substring-no-properties (current-kill 0))))
 
 (defun fancy-yank-insert (input)
+  "Insert INPUT according to `fancy-yank-rules'."
   (interactive "MInput: ")
-  (insert (fy--transform input)))
+  (insert (fancy-yank--transform input)))
 
-(defun fy--transform (input)
-  (if-let ((rule (fy--find-rule input)))
-      (fy--apply rule input)
+(defun fancy-yank--transform (input)
+  "Transform INPUT according to `fancy-yank-rules'."
+  (if-let ((rule (fancy-yank--find-rule input)))
+      (fancy-yank--apply rule input)
     input))
 
-(defun fy--find-rule (input)
+(defun fancy-yank--find-rule (input)
+  "Find a rule for INPUT."
   (seq-find (lambda (rule)
-              (fy--rule-matches-p rule input))
+              (fancy-yank--rule-matches-p rule input))
             fancy-yank-rules))
 
-(defun fy--rule-matches-p (rule input)
+(defun fancy-yank--rule-matches-p (rule input)
+  "Return non-nil if RULE match INPUT."
   (cond ((stringp (car rule))
          (string-match-p (car rule) input))
         ((functionp (car rule))
          (funcall (car rule) input))
         (t nil)))
 
-(defun fy--apply (rule input)
+(defun fancy-yank--apply (rule input)
+  "Apply RULE to INPUT."
   (cond ((and (stringp (car rule))
               (stringp (cdr rule)))
          (replace-regexp-in-string (car rule) (cdr rule) input))
@@ -168,7 +177,7 @@ Should be used inside the cdr of the RULE."
         (setq num 0)))
     (seq-reverse res)))
 
-(defun fancy-yank-extract-url-title (rule input &rest args)
+(defun fancy-yank-extract-url-title (_rule input &rest _args)
   "Get the title of the INPUT url.
 
 Returns a (INPUT, title) list.
@@ -180,7 +189,9 @@ Should be used inside the cdr of the RULE."
 (defun fancy-yank-format-link (url description &rest args)
   "Format link for URL with DESCRIPTION based on current mode.
 
-Should be used inside the cdr of the RULE."
+Should be used inside the cdr of the RULE.
+
+URL, DESCRIPTION and ARGS are passed to the format function."
   (if-let ((rule (assoc major-mode fancy-yank-format-link-rules)))
       (apply (cdr rule) url description args)
     url))
