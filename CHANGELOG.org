@@ -1,16 +1,20 @@
 * Unreleased
+
 - Expose ~fancy-yank-format-link-rules~ allowing to configure
   ~fancy-yank-format-link~.
 - Allow to override function for extracting title from HTTP URL by exposing
   ~fancy-yank-extract-http-title-f~ variable.
 - Handle ~nil~ title in default rules.
+- Allow repeating groups in ~fancy-yank-extract-regex~.
 
 * ~v0.0.3~
+
 - Use ~substring-no-properties~ on the content of the buffer, before passing it
   to the ~fancy-yank-insert~.
 - Added tests.
 
 * ~v0.0.2~
+
 Release of piped transformations.
 
 - Added support of piped transformations.
@@ -21,6 +25,7 @@ Release of piped transformations.
 - Fixed license file.
 
 * ~v0.0.1~
+
 Initial release.
 
 - Core functionality.

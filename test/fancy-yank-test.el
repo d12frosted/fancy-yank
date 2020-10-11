@@ -18,12 +18,14 @@
 (ert-deftest fancy-yank-extract-regexp-test ()
   "Tests `fancy-yank-extract-regexp'."
   (let ((fancy-yank-rules
-         '(("The \\(quick\\) brown fox jumps over the \\(lazy\\) dog"
+         '(("\\([[:alnum:]]+\\) between \\([[:alnum:]]+\\)"
             . (fancy-yank-extract-regex
                (lambda (one two &rest args)
                  (concat one " " two args)))))))
-    (should (equal "quick lazy"
-                   (fy--transform "The quick brown fox jumps over the lazy dog")))
+    (should (equal "hobbit orcs"
+                   (fy--transform "hobbit between orcs")))
+    (should (equal "hobbit hobbit"
+                   (fy--transform "hobbit between hobbit")))
     (should (equal "some-random-string"
                    (fy--transform "some-random-string")))))
 

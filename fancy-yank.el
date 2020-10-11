@@ -163,11 +163,10 @@ Should be used inside the cdr of the RULE."
         (num 1))
     (while (> num 0)
       (if-let ((x (match-string num input)))
-          (progn
-            (add-to-list 'res x t)
-            (setq num (+ 1 num)))
+          (setq res (cons x res)
+                num (+ 1 num))
         (setq num 0)))
-    res))
+    (seq-reverse res)))
 
 (defun fancy-yank-extract-url-title (rule input &rest args)
   "Get the title of the INPUT url.
