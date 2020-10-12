@@ -95,6 +95,7 @@ Simple as that.")
 (defvar fancy-yank-format-link-rules
   '((org-mode . org-link-make-string)
     (org-capture-mode . org-link-make-string)
+    (org-journal-mode . org-link-make-string)
     (markdown-mode . (lambda (url description)
                        (format "[%s](%s)"
                                (if description description url)

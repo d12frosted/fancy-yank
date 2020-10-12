@@ -7,6 +7,7 @@
 - Handle ~nil~ title in default rules.
 - Allow repeating groups in ~fancy-yank-extract-regex~.
 - Use ~org-link-make-string~ for link generation in ~org-mode~.
+- Support ~org-journal~ mode.
 
 * ~v0.0.3~
 
