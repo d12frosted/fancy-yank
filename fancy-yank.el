@@ -10,7 +10,7 @@
 ;; Homepage: https://github.com/d12frosted/emacs-fancy-yank
 
 ;; Package-Version: 0.0.2
-;; Package-Requires: ((emacs "25.1") (org-cliplink "0.2"))
+;; Package-Requires: ((emacs "25.1") (org-cliplink "0.2") (org "9.0"))
 
 ;; This file is not part of GNU Emacs.
 ;;; License: GPLv3
@@ -93,20 +93,11 @@ Transformation can come in different flavors as well.
 Simple as that.")
 
 (defvar fancy-yank-format-link-rules
-  '((org-mode . (lambda (url description &rest args)
-                  (format "[[%s][%s%s]]"
-                          url
-                          (if description description url)
-                          (apply #'concat args))))
-    (org-capture-mode . (lambda (url description &rest args)
-                          (format "[[%s][%s%s]]"
-                                  url
-                                  (if description description url)
-                                  (apply #'concat args))))
-    (markdown-mode . (lambda (url description &rest args)
-                       (format "[%s%s](%s)"
+  '((org-mode . org-link-make-string)
+    (org-capture-mode . org-link-make-string)
+    (markdown-mode . (lambda (url description)
+                       (format "[%s](%s)"
                                (if description description url)
-                               (apply #'concat args)
                                url))))
   "Rules for `fancy-yank-format-link'.
 
