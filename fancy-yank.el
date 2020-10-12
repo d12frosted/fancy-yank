@@ -10,7 +10,7 @@
 ;; Homepage: https://github.com/d12frosted/emacs-fancy-yank
 
 ;; Package-Version: 0.0.2
-;; Package-Requires: ((emacs "25.1") (org-cliplink "0.2") (org "9.0"))
+;; Package-Requires: ((emacs "27.1") (org-cliplink "0.2") (org "9.0"))
 
 ;; This file is not part of GNU Emacs.
 ;;; License: GPLv3
@@ -58,6 +58,8 @@
 
 (require 'subr-x)
 (require 'seq)
+
+(autoload #'org-link-make-string "ol")
 
 (defvar fancy-yank-rules '()
   "Rules for `fancy-yank-insert'.
