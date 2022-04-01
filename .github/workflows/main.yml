@@ -19,7 +19,7 @@ jobs:
       - uses: purcell/setup-emacs@master
         with:
           version: ${{ matrix.emacs_version }}
-      - uses: actions/setup-python@v2.1.3
+      - uses: actions/setup-python@v3.1.0
       - uses: conao3/setup-cask@master
 
       - uses: actions/checkout@v2.3.3
