@@ -1,3 +1,9 @@
+#+begin_html
+<p align="center">
+  <a href="https://github.com/sponsors/d12frosted"><img alt="Sponsor" src="https://img.shields.io/badge/Sponsor-d12frosted-pink?logo=githubsponsors&logoColor=white"/></a>
+</p>
+#+end_html
+
 * =fancy-yank=
 
 [[https://github.com/d12frosted/fancy-yank/workflows/CI/badge.svg][file:https://github.com/d12frosted/fancy-yank/workflows/CI/badge.svg]]
@@ -66,3 +72,7 @@ Now you can run tests.
 ** Contributing
 Let me know if you have any issues, ideas or proposals. Pull requests are
 welcome!
+
+* Support
+
+If you enjoy this project, you can support its development via [[https://github.com/sponsors/d12frosted][GitHub Sponsors]] or [[https://www.patreon.com/d12frosted][Patreon]].
